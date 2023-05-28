@@ -1,0 +1,36 @@
+<h2>Pagina do funcionário<h2>
+    <input type="submit" value="Agendar consulta" onclick="location.href='agendamento.php'"/>
+    <input type="submit" value="Cadastrar cliente" onclick="location.href='cadastro.php'"/>
+    <br/><br/><br/>
+    <form action="employee.php" method="Post">
+        <input type="text" name="procura"/>
+        <input type="submit" name="busca" value="Buscar cliente"/>
+        <input type="submit" value="Atualizar" onclick="location.href='employee.php'"/>
+        <br/><br/>
+    </form>
+<table border="1">
+    <tr>
+        <th>Nome</th>
+        <th>E-mail</th>
+        <th>Telefone</th>
+        <th>CPF</th>
+        <th>Alterar</th>
+    </tr>
+    <form action="employee.php" method="POST">
+        Alterar cadastro:
+        <br/>
+        <input type="hidden" name="id" value=""/>
+        Nome completo: <input type="text" name="nome" value=""/><br/>
+        E-mail: <input type="email" name="email" value=""/><br/>
+        CPF: <input type="cpf" name="cpf" value=""/><br/>
+        Número do celular: <input type="tel" name="tel" value=""/><br/>
+        Data de nascimento: <input type="date" name="nascimento" value=""/><br/>
+        Tipo de usuário: <input type="number" name="tipo" value="">
+        <br/>
+        <input type="submit" name="altera" value="Alterar"/>
+        <br/><br/><br/>
+        Excluir pessoa? <input type="submit" name="excluir" value="Excluir"/>
+        <br/><br/><br/>
+    </form>
+    
+    
