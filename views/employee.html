@@ -1,36 +1,147 @@
-<h2>Pagina do funcionário<h2>
-    <input type="submit" value="Agendar consulta" onclick="location.href='agendamento.php'"/>
-    <input type="submit" value="Cadastrar cliente" onclick="location.href='cadastro.php'"/>
-    <br/><br/><br/>
-    <form action="employee.php" method="Post">
-        <input type="text" name="procura"/>
-        <input type="submit" name="busca" value="Buscar cliente"/>
-        <input type="submit" value="Atualizar" onclick="location.href='employee.php'"/>
-        <br/><br/>
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Página do funcionário</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h2 {
+      text-align: center;
+      color: #333;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .btn-container {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .btn-container button {
+      background-color: #4CAF50;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      margin-right: 10px;
+      cursor: pointer;
+      border-radius: 3px;
+    }
+
+    .search-form {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .search-form input[type="text"] {
+      flex: 1;
+      padding: 8px;
+      border-radius: 3px;
+      border: 1px solid #ddd;
+    }
+
+    .search-form button {
+      background-color: #4CAF50;
+      color: #fff;
+      border: none;
+      padding: 8px 20px;
+      margin-left: 10px;
+      cursor: pointer;
+      border-radius: 3px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+
+    th, td {
+      padding: 10px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+
+    th {
+      background-color: #4CAF50;
+      color: #fff;
+    }
+
+    .edit-form input[type="text"],
+    .edit-form input[type="email"],
+    .edit-form input[type="tel"],
+    .edit-form input[type="date"],
+    .edit-form input[type="number"] {
+      width: 100%;
+      padding: 8px;
+      border-radius: 3px;
+      border: 1px solid #ddd;
+      margin-bottom: 10px;
+    }
+
+    .edit-form input[type="submit"] {
+      background-color: #4CAF50;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+      border-radius: 3px;
+    }
+
+    .delete-form input[type="submit"] {
+      background-color: #ff0000;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+      border-radius: 3px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Página do funcionário</h2>
+    <div class="btn-container">
+      <button onclick="location.href='agendamento.php'">Agendar consulta</button>
+      <button onclick="location.href='cadastro.php'">Cadastrar cliente</button>
+    </div>
+    <form action="/employee" method="POST" class="search-form">
+      <input type="text" name="procura" placeholder="Digite o nome do cliente"/>
+      <button type="submit" name="busca">Buscar cliente</button>
+      <button onclick="location.href='employee.php'">Atualizar</button>
     </form>
-<table border="1">
-    <tr>
+    <table>
+      <tr>
         <th>Nome</th>
         <th>E-mail</th>
         <th>Telefone</th>
         <th>CPF</th>
         <th>Alterar</th>
-    </tr>
-    <form action="employee.php" method="POST">
-        Alterar cadastro:
-        <br/>
-        <input type="hidden" name="id" value=""/>
-        Nome completo: <input type="text" name="nome" value=""/><br/>
-        E-mail: <input type="email" name="email" value=""/><br/>
-        CPF: <input type="cpf" name="cpf" value=""/><br/>
-        Número do celular: <input type="tel" name="tel" value=""/><br/>
-        Data de nascimento: <input type="date" name="nascimento" value=""/><br/>
-        Tipo de usuário: <input type="number" name="tipo" value="">
-        <br/>
-        <input type="submit" name="altera" value="Alterar"/>
-        <br/><br/><br/>
-        Excluir pessoa? <input type="submit" name="excluir" value="Excluir"/>
-        <br/><br/><br/>
+      </tr>
+      <!-- Dados da tabela aqui -->
+    </table>
+    <form action="/employee" method="POST" class="edit-form">
+      <input type="hidden" name="id" value=""/>
+      Nome completo: <input type="text" name="nome" value=""/><br/>
+      E-mail: <input type="email" name="email" value=""/><br/>
+      CPF: <input type="text" name="cpf" value=""/><br/>
+      Número do celular: <input type="tel" name="tel" value=""/><br/>
+      Data de nascimento: <input type="date" name="nascimento" value=""/><br/>
+      Tipo de usuário: <input type="number" name="tipo" value="">
+      <br/>
+      <input type="submit" name="altera" value="Alterar"/>
     </form>
-    
-    
+    <form action="/employee" method="POST" class="delete-form">
+      Excluir pessoa? <input type="submit" name="excluir" value="Excluir"/>
+    </form>
+  </div>
+</body>
+</html>

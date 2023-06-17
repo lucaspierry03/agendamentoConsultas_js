@@ -1,18 +1,91 @@
-<h3>Login Cliente<h3>
-<form action="login.php" method="post">
-    <input type="email" name="email"
-    placeholder="E-mail"/>
-    <br/>
-    <input type="password" name="senha"
-    placeholder="Senha"/>
-    <br/>
-    <input type="submit" value="Logar"
-    name="login"/>
-</form>
-    <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
-Contato da clinica
-<hr>
-<br/>
-Endereço: Rua, Candido de Abreu, 469 - Centro Cívico, Curitiba. Sala: 903. Andar: 9.
-<br/><br/>
-Telefone: 32090940    
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Página de Login</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .form-container {
+      width: 400px;
+      background-color: #fff;
+      border-radius: 4px;
+      padding: 20px;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      color: #666;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 16px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      background-color: #4CAF50;
+      color: #fff;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    .form-container > p {
+      text-align: center;
+      margin-top: 16px;
+      color: #666;
+    }
+
+    a {
+      text-align: center;
+      color: #000000;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="form-container">
+      <h1>Login</h1>
+      <form action="/logar" method="POST">
+        <label for="email">E-mail:</label>
+        <input type="text" name="email" required>
+
+        <label for="senha">Senha:</label>
+        <input type="password" name="senha" required>
+
+        <button type="submit">Entrar</button>
+      </form>
+
+      <p>Não tem uma conta? <a href="/cadastro">Cadastre-se</a></p>
+    </div>
+  </div>
+</body>
+</html>

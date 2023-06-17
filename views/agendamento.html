@@ -1,26 +1,89 @@
-<h2>Faça seu agendamento!<h2>
-    <h3><form action="agendamento.php" method="POST">
-        <input type="checkbox" name="podologia" value="1"><label>Podologia</label>
-        </br>
-        <input type="checkbox" name="unha_encravada" value="1"><label>Unha encravada</label>
-        </br>
-        <input type="checkbox" name="laser" value="1"><label>Laser</label>
-        </br>
-        <input type="checkbox" name="reflexologia" value="1"><label>Reflexologia</label>
-        </br>
-        <input type="checkbox" name="spa" value="1"><label>SPA dos pés</label>
-        </br>
-        <input type="checkbox" name="verruga_plantar" value="1"><label>Verruga plantar</label>
-        </br>
-        <input type="checkbox" name="pes_diabeticos" value="1"><label>Pés diabéticos</label>
-        </br>
-        <input type="checkbox" name="retorno" value="1"><label>Retorno</label>
-        </br>
-        9:00 até as 19:00 de segunda à sexta e aos sábados das 9:00 às 15:00
-        </br>
-        <input type="date" name="data"/>
-        <input type="time" name="hora"/>
-        </br></br>
-        <input type="submit" name="confirmar" value="Confirmar consulta"/><h3>
-            
-        Deseja <a href='employee.php?logout'>sair</a>?
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Agendamento</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h2 {
+      text-align: center;
+      color: #333;
+    }
+
+    form {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      width: 400px;
+      margin: 0 auto;
+    }
+
+    label {
+      display: inline-block;
+      margin-top: 10px;
+      color: #666;
+    }
+
+    input[type="text"],
+    input[type="checkbox"],
+    input[type="date"],
+    input[type="time"] {
+      margin-top: 5px;
+      display: inline-block;
+    }
+
+    input[type="submit"] {
+      background-color: #4CAF50;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+
+    input[type="submit"]:hover {
+      background-color: #45a049;
+    }
+
+    a {
+      display: block;
+      text-align: center;
+      color: #666;
+      text-decoration: none;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h2>Faça seu agendamento!</h2>
+  <form action="/agendamento" method="POST">
+    <label for="nome_paciente">Nome do paciente:</label>
+    <input type="text" name="nome_paciente" id="nome_paciente" placeholder="Digite o nome" required/>
+
+    <label>Procedimentos:</label>
+    <input type="checkbox" name="podologia" value="1"><label>Podologia</label>
+    <input type="checkbox" name="unha_encravada" value="1"><label>Unha encravada</label>
+    <input type="checkbox" name="laser" value="1"><label>Laser</label>
+    <input type="checkbox" name="reflexologia" value="1"><label>Reflexologia</label>
+    <input type="checkbox" name="spa" value="1"><label>SPA dos pés</label>
+    <input type="checkbox" name="verruga_plantar" value="1"><label>Verruga plantar</label>
+    <input type="checkbox" name="pes_diabeticos" value="1"><label>Pés diabéticos</label>
+    <input type="checkbox" name="retorno" value="1"><label>Retorno</label>
+
+    <p>Horário de atendimento: 9:00 até às 19:00 de segunda à sexta e aos sábados das 9:00 às 15:00</p>
+    <input type="date" name="data" required/>
+    <input type="time" name="hora" required/>
+
+    <input type="submit" name="confirmar" value="Confirmar consulta"/>
+  </form>
+
+  <p><a href='/procedimentos'>Clique aqui para ver a descrição de cada procedimento</a></p>
+  <p><a href='/'>Deseja sair?</a></p>
+</body>
+</html>

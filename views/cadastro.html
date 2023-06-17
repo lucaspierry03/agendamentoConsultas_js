@@ -1,15 +1,142 @@
-<form action="cadastro.php" method="POST">
-    Cadastro:
-    <br/>
-    Digite o seu nome completo: <input type="text" name="nome"/><br/>
-    Digite o seu e-mail: <input type="email" name="email"/><br/>
-    Digite o seu CPF: <input type="cpf" name="cpf"/><br/>
-    Digita o número do seu celular: <input type="tel" name="tel"/><br/>
-    Data de nascimento: <input type="date" name="nascimento"/><br/>
-    Digite sua senha: <input type="password" name="senha"/><br/>
-    Repita sua senha: <input type="password" name="rep_senha"/><br/>
-    <input type="submit" name="grava"
-    value="Gravar"/>
-</form>
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Cadastro</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+      margin: 0;
+      padding: 20px;
+    }
 
-<a href='employee.php?voltar'>Voltar para employee</a>
+    form {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      width: 300px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+
+    label {
+      display: block;
+      margin-top: 10px;
+      color: #666;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    input[type="date"],
+    input[type="password"] {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 3px;
+    }
+
+    button[type="submit"] {
+      background-color: #4CAF50;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+
+    button[type="submit"]:hover {
+      background-color: #45a049;
+    }
+
+    .password-strength {
+      margin-top: 5px;
+    }
+
+    .weak {
+      color: red;
+    }
+
+    .fair {
+      color: orange;
+    }
+
+    .good {
+      color: yellow;
+    }
+
+    .strong {
+      color: green;
+    }
+
+    a {
+      display: block;
+      text-align: center;
+      color: #666;
+      text-decoration: none;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Cadastro</h1>
+  <form action="/add" method="POST">
+    <label for="nm_pessoa">Digite o seu nome completo:</label>
+    <input type="text" name="nm_pessoa" id="nm_pessoa" required/>
+
+    <label for="ds_email">Digite o seu e-mail:</label>
+    <input type="email" name="ds_email" id="ds_email" required/>
+
+    <label for="nr_cpf">Digite o seu CPF:</label>
+    <input type="text" name="nr_cpf" id="nr_cpf" required/>
+
+    <label for="nr_telefone">Digite o número do seu celular:</label>
+    <input type="tel" name="nr_telefone" id="nr_telefone" required/>
+
+    <label for="dt_nascimento">Data de nascimento:</label>
+    <input type="date" name="dt_nascimento" id="dt_nascimento" required/>
+
+    <label for="ds_senha">Digite sua senha:</label>
+    <input type="password" name="ds_senha" id="ds_senha" required/>
+    <div class="password-strength"></div>
+
+    <button type="submit">Cadastrar</button>
+  </form>
+
+  <a href="/login">Já tem uma conta? Faça login</a>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/zxcvbn/4.4.2/zxcvbn.js"></script>
+  <script>
+    const passwordInput = document.getElementById('ds_senha');
+    const strengthIndicator = document.querySelector('.password-strength');
+
+    passwordInput.addEventListener('input', function () {
+      const password = passwordInput.value;
+      const strength = zxcvbn(password).score;
+
+      let strengthText = '';
+
+      if (password.length === 0) {
+        strengthText = '';
+      } else if (strength === 0) {
+        strengthText = 'Fraca';
+      } else if (strength === 1) {
+        strengthText = 'Regular';
+      } else if (strength === 2) {
+        strengthText = 'Boa';
+      } else if (strength === 3) {
+        strengthText = 'Forte';
+      } else if (strength === 4) {
+        strengthText = 'Muito Forte';
+      }
+
+      strengthIndicator.textContent = `Força da senha: ${strengthText}`;
+    });
+  </script>
+</body>
+</html>
