@@ -36,26 +36,13 @@
     }
 
     .search-form {
-      display: flex;
-      align-items: center;
       margin-bottom: 20px;
     }
 
     .search-form input[type="text"] {
-      flex: 1;
       padding: 8px;
       border-radius: 3px;
       border: 1px solid #ddd;
-    }
-
-    .search-form button {
-      background-color: #4CAF50;
-      color: #fff;
-      border: none;
-      padding: 8px 20px;
-      margin-left: 10px;
-      cursor: pointer;
-      border-radius: 3px;
     }
 
     table {
@@ -104,44 +91,98 @@
       cursor: pointer;
       border-radius: 3px;
     }
+
+    /* Define uma largura fixa para as colunas do CPF e do número */
+    .cpf-column,
+    .numero-column {
+      width: 120px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
   </style>
 </head>
 <body>
   <div class="container">
     <h2>Página do funcionário</h2>
     <div class="btn-container">
-      <button onclick="location.href='agendamento.php'">Agendar consulta</button>
-      <button onclick="location.href='cadastro.php'">Cadastrar cliente</button>
+      <button onclick="window.history.back()">Agendar consulta</button>
+      <button onclick="location.href='/cadastro'">Cadastrar</button>
     </div>
-    <form action="/employee" method="POST" class="search-form">
-      <input type="text" name="procura" placeholder="Digite o nome do cliente"/>
-      <button type="submit" name="busca">Buscar cliente</button>
-      <button onclick="location.href='employee.php'">Atualizar</button>
-    </form>
-    <table>
+    <div class="search-form">
+      <input type="text" id="searchInput" placeholder="Digite o nome do cliente" oninput="filterTable()"/>
+    </div>
+    <table id="clientTable">
       <tr>
         <th>Nome</th>
         <th>E-mail</th>
         <th>Telefone</th>
-        <th>CPF</th>
+        <th class="cpf-column">CPF</th>
         <th>Alterar</th>
       </tr>
-      <!-- Dados da tabela aqui -->
+      <tr>
+        <td>John Doe</td>
+        <td>johndoe@example.com</td>
+        <td class="numero-column">(12) 3456-7890</td>
+        <td class="cpf-column">123.456.789-00</td>
+        <td>
+          <button style="background-color: blue; color: white;" onclick="editPerson(1)">Editar</button>
+          <button style="background-color: red; color: white;" onclick="deletePerson(1)">Excluir</button>
+        </td>
+      </tr>
+      <tr>
+        <td>Jane Smith</td>
+        <td>janesmith@example.com</td>
+        <td class="numero-column">(41) 98765-3210</td>
+        <td class="cpf-column">987.654.321-00</td>
+        <td>
+          <button style="background-color: blue; color: white;" onclick="editPerson(2)">Editar</button>
+          <button style="background-color: red; color: white;" onclick="deletePerson(2)">Excluir</button>
+        </td>
+      </tr>
     </table>
-    <form action="/employee" method="POST" class="edit-form">
-      <input type="hidden" name="id" value=""/>
-      Nome completo: <input type="text" name="nome" value=""/><br/>
-      E-mail: <input type="email" name="email" value=""/><br/>
-      CPF: <input type="text" name="cpf" value=""/><br/>
-      Número do celular: <input type="tel" name="tel" value=""/><br/>
-      Data de nascimento: <input type="date" name="nascimento" value=""/><br/>
-      Tipo de usuário: <input type="number" name="tipo" value="">
-      <br/>
-      <input type="submit" name="altera" value="Alterar"/>
-    </form>
-    <form action="/employee" method="POST" class="delete-form">
-      Excluir pessoa? <input type="submit" name="excluir" value="Excluir"/>
-    </form>
   </div>
+
+  <script>
+    function filterTable() {
+      var input, filter, table, tr, td, i, txtValue;
+      input = document.getElementById("searchInput");
+      filter = input.value.toUpperCase();
+      table = document.getElementById("clientTable");
+      tr = table.getElementsByTagName("tr");
+
+      for (i = 0; i < tr.length; i++) {
+        var matchFound = false;
+        for (var j = 0; j < tr[i].cells.length; j++) {
+          td = tr[i].cells[j];
+          if (td) {
+            txtValue = td.textContent || td.innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+              matchFound = true;
+              break;
+            }
+          }
+        }
+        if (matchFound) {
+          tr[i].style.display = "";
+        } else {
+          tr[i].style.display = "none";
+        }
+      }
+    }
+
+    function editPerson(id) {
+      // Lógica para preencher o formulário de edição com os dados da pessoa selecionada
+      // Por exemplo, você pode fazer uma requisição AJAX para buscar os dados do servidor
+      // e preencher os campos do formulário com os valores retornados.
+      console.log("Editar pessoa com ID: " + id);
+    }
+
+    function deletePerson(id) {
+      // Lógica para excluir a pessoa selecionada
+      // Por exemplo, você pode fazer uma requisição AJAX para enviar o ID da pessoa a ser excluída
+      console.log("Excluir pessoa com ID: " + id);
+    }
+  </script>
 </body>
 </html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Consultas Marcadas</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    h2 {
+      text-align: center;
+      color: #333;
+    }
+
+    .consultation-info {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      margin-bottom: 20px;
+    }
+
+    .info-label {
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .info-value {
+      margin-bottom: 15px;
+    }
+
+    .info-value:last-child {
+      margin-bottom: 0;
+    }
+
+    .back-button {
+      display: block;
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .back-button a {
+      color: #666;
+      text-decoration: none;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h2>Consultas Marcadas</h2>
+
+    <% for (var i=0; i < consultas.length; i++) { %>
+      <div class="consultation-info">
+        <div class="info-label">Data e Hora:</div>
+        <div class="info-value">
+          <%= consultas[i].data %>, às <%= consultas[i].hora %>
+        </div>
+
+        <div class="info-label">Paciente:</div>
+        <div class="info-value">
+          <%= consultas[i].nome_paciente %>
+        </div>
+
+        <div class="info-label">Procedimentos:</div>
+        <div class="info-value">
+          <% var especialidades = []; %>
+          <% if (consultas[i].podologia == '1') { especialidades.push('Podologia'); } %>
+          <% if (consultas[i].unha_encravada == '1') { especialidades.push('Unha encravada'); } %>
+          <% if (consultas[i].laser == '1') { especialidades.push('Laser'); } %>
+          <% if (consultas[i].reflexologia == '1') { especialidades.push('Reflexologia'); } %>
+          <% if (consultas[i].spa == '1') { especialidades.push('Spa'); } %>
+          <% if (consultas[i].verruga_plantar == '1') { especialidades.push('Verruga plantar'); } %>
+          <% if (consultas[i].pes_diabeticos == '1') { especialidades.push('Pés diabéticos'); } %>
+          <% if (consultas[i].retorno == '1') { especialidades.push('Retorno'); } %>
+          <%= especialidades.join(', '); %>
+          <!-- Adicione outras especialidades aqui -->
+        </div>        
+      </div>
+      <% } %>
+
+      <div class="back-button">
+        <button onclick="window.history.back()">Voltar para o agendamento</button>
+      </div>      
+  </div>
+</body>
+
+</html>

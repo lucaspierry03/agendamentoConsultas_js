@@ -8,6 +8,7 @@
   const Agendamento = require('./models/Agendamentos');
   const passport = require('passport');
   const LocalStrategy = require('passport-local').Strategy;
+  app.set('view engine', 'ejs');
 
   // Configuração do Passport.js
 passport.use(new LocalStrategy({
@@ -144,7 +145,25 @@ passport.use(new LocalStrategy({
     app.get("/procedimentos", function (req, res) {
       res.sendFile(__dirname + "/views/procedimentos.html");
     });
-  
+
+    app.get('/consultas', function(req, res) {
+      // Faça a consulta ao banco de dados para obter as informações das consultas marcadas
+      Agendamento.findAll().then(function(results) {
+        // Renderiza a página HTML e passa as informações para ela
+        res.render('consultas', { consultas: results });
+      }).catch(function(err) {
+        // Lida com o erro, se houver
+        console.error('Erro ao consultar o banco de dados:', err);
+        res.status(500).send('Erro ao consultar o banco de dados');
+      });
+    });
+    
+  // Rota de de procedimentos
+  app.get("/employee", function (req, res) {
+  res.sendFile(__dirname + "/views/employee.html");
+  });
+
+    
 
   // Inicia o servidor
   app.listen(3000, function () {

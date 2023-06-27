@@ -15,6 +15,21 @@
       color: #333;
     }
 
+    .btn-container {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .btn-container button {
+      background-color: #4CAF50;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      margin-right: 10px;
+      cursor: pointer;
+      border-radius: 3px;
+    }
+
     form {
       background-color: #fff;
       padding: 20px;
@@ -61,6 +76,12 @@
   </style>
 </head>
 <body>
+  <div class="btn-container">
+    <button onclick="location.href='/employee'">Ver clientes da clínica</button>
+    <button onclick="location.href='/procedimentos'">Ver descrição de procedimentos</button>
+    <button onclick="location.href='/consultas'">Ver consultas já marcadas</button>
+    <button onclick="location.href='/'">Deseja sair?</button>
+  </div>
   <h2>Faça seu agendamento!</h2>
   <form action="/agendamento" method="POST">
     <label for="nome_paciente">Nome do paciente:</label>
@@ -83,7 +104,5 @@
     <input type="submit" name="confirmar" value="Confirmar consulta"/>
   </form>
 
-  <p><a href='/procedimentos'>Clique aqui para ver a descrição de cada procedimento</a></p>
-  <p><a href='/'>Deseja sair?</a></p>
 </body>
 </html>

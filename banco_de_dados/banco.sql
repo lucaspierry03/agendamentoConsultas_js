@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Tempo de geração: 15/06/2023 às 22:11
+-- Tempo de geração: 27/06/2023 às 00:59
 -- Versão do servidor: 8.0.31
 -- Versão do PHP: 8.0.26
 
@@ -153,14 +153,16 @@ CREATE TABLE IF NOT EXISTS `pessoa` (
   `nr_cpf` varchar(15) NOT NULL,
   `tp_pessoa` int NOT NULL,
   PRIMARY KEY (`id_pessoa`)
-) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Despejando dados para a tabela `pessoa`
 --
 
 INSERT INTO `pessoa` (`id_pessoa`, `id_especialidade`, `ds_email`, `ds_senha`, `nr_telefone`, `nm_pessoa`, `nr_situacao`, `dt_nascimento`, `nr_cpf`, `tp_pessoa`) VALUES
-(37, 0, 'willian@teste.com', '698dc19d489c4e4db73e28a713eab07b', '123', 'Willian', 0, '2023-06-15', '123', 0);
+(37, 0, 'willian@teste.com', '698dc19d489c4e4db73e28a713eab07b', '123', 'Willian', 0, '2023-06-15', '123', 0),
+(38, 0, 'lucaspierry00@gmail.com', '2db95e8e1a9267b7a1188556b2013b33', 't', 'testando', 0, '2023-06-24', '1', 0),
+(39, 0, 'simone@simone.com', 'c4ca4238a0b923820dcc509a6f75849b', '1', 'Simone', 0, '2023-06-15', '1', 0);
 
 -- --------------------------------------------------------
 
@@ -183,40 +185,16 @@ CREATE TABLE IF NOT EXISTS `tipo_agendamento` (
   `data` date NOT NULL,
   `hora` time NOT NULL,
   PRIMARY KEY (`id_tpAgendamento`)
-) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=65 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Despejando dados para a tabela `tipo_agendamento`
 --
 
 INSERT INTO `tipo_agendamento` (`id_tpAgendamento`, `nome_paciente`, `podologia`, `unha_encravada`, `laser`, `reflexologia`, `spa`, `verruga_plantar`, `pes_diabeticos`, `retorno`, `data`, `hora`) VALUES
-(1, NULL, 0, 0, 0, 0, 0, 0, 0, 0, '0000-00-00', '00:00:00'),
-(9, NULL, 1, 1, 1, 1, 1, 1, 1, 1, '0000-00-00', '00:00:00'),
-(10, NULL, 1, 1, 1, 1, 1, 1, 1, 1, '2022-12-04', '00:18:00'),
-(11, NULL, 1, 0, 0, 1, 0, 0, 0, 1, '2022-12-04', '00:27:00'),
-(12, NULL, 1, 0, 0, 1, 0, 1, 0, 0, '2022-12-04', '00:31:00'),
-(13, NULL, 1, 0, 0, 0, 0, 0, 0, 0, '2222-11-01', '22:00:00'),
-(14, NULL, 1, 0, 0, 0, 0, 0, 0, 0, '2022-12-07', '19:07:00'),
-(15, NULL, 1, 0, 0, 0, 0, 0, 0, 0, '2023-06-16', '00:00:00'),
-(16, NULL, 1, 1, 0, 0, 1, 1, 1, 1, '2023-06-14', '18:59:00'),
-(17, NULL, 1, 1, 0, 0, 1, 1, 1, 1, '2023-06-15', '19:03:00'),
-(18, 'Lucas', 1, 0, 0, 0, 0, 0, 0, 0, '2023-06-14', '19:25:00'),
-(19, 'Lucas', 0, 0, 0, 0, 0, 0, 0, 0, '0000-00-00', '00:00:00'),
-(20, '', 1, 1, 1, 1, 1, 1, 1, 1, '2023-06-15', '22:54:00'),
-(21, '', 0, 0, 0, 1, 0, 0, 0, 0, '0000-00-00', '00:00:00'),
-(22, 'Lucas', 0, 0, 0, 1, 0, 0, 0, 0, '0000-00-00', '00:00:00'),
-(23, '', 0, 0, 0, 0, 0, 0, 1, 0, '0000-00-00', '00:00:00'),
-(24, '', 0, 0, 0, 0, 0, 0, 1, 0, '0000-00-00', '00:00:00'),
-(25, '', 0, 0, 0, 0, 0, 0, 0, 0, '0000-00-00', '00:00:00'),
-(26, '', 0, 0, 0, 0, 0, 0, 0, 0, '0000-00-00', '00:00:00'),
-(27, '', 0, 0, 0, 0, 0, 0, 0, 0, '0000-00-00', '00:00:00'),
-(28, '', 0, 0, 0, 0, 0, 0, 0, 0, '0000-00-00', '00:00:00'),
-(29, '', 0, 0, 0, 0, 0, 0, 0, 0, '0000-00-00', '00:00:00'),
-(30, '', 0, 0, 0, 0, 0, 0, 0, 0, '0000-00-00', '00:00:00'),
-(31, '', 0, 0, 1, 0, 0, 0, 0, 0, '2023-06-07', '00:00:00'),
-(32, '', 0, 0, 1, 0, 0, 0, 0, 0, '2023-06-07', '23:08:00'),
-(33, '', 0, 0, 1, 0, 0, 0, 0, 0, '2023-06-07', '23:08:00'),
-(34, '', 0, 0, 1, 0, 0, 0, 0, 0, '2023-06-07', '23:08:00');
+(55, 'Simone', 1, 0, 0, 0, 0, 0, 1, 0, '2023-06-16', '14:20:00'),
+(63, 'Lucas', 0, 1, 1, 1, 1, 0, 1, 0, '2023-06-13', '20:15:00'),
+(64, 'Lucas', 1, 0, 0, 0, 0, 0, 0, 0, '2023-06-07', '17:59:00');
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
