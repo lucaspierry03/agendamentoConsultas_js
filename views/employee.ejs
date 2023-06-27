@@ -101,6 +101,13 @@
       text-overflow: ellipsis;
     }
   </style>
+   <!-- Adicione o seguinte trecho de código JavaScript -->
+   <script>
+    // Recarrega a página após 2 segundos (2000 milissegundos)
+    setTimeout(function() {
+      location.reload();
+    }, 2000);
+  </script>
 </head>
 <body>
   <div class="container">
@@ -120,26 +127,22 @@
         <th class="cpf-column">CPF</th>
         <th>Alterar</th>
       </tr>
+
+      <% for (var i=0; i < employee.length; i++) { %>
       <tr>
-        <td>John Doe</td>
-        <td>johndoe@example.com</td>
-        <td class="numero-column">(12) 3456-7890</td>
-        <td class="cpf-column">123.456.789-00</td>
+        <td><%= employee[i].nm_pessoa %></td>
+        <td><%= employee[i].ds_email %></td>
+        <td class="numero-column"><%= employee[i].nr_telefone %></td>
+        <td class="cpf-column"><%= employee[i].nr_cpf %></td>
         <td>
-          <button style="background-color: blue; color: white;" onclick="editPerson(1)">Editar</button>
-          <button style="background-color: red; color: white;" onclick="deletePerson(1)">Excluir</button>
+          <button style="background-color: blue; color: white;" onclick="editPerson(<%= employee[i].id_pessoa %>);">Editar</button>
+          <button style="background-color: red; color: white;" onclick="deletePerson(<%= employee[i].id_pessoa %>);">Excluir</button>
         </td>
       </tr>
-      <tr>
-        <td>Jane Smith</td>
-        <td>janesmith@example.com</td>
-        <td class="numero-column">(41) 98765-3210</td>
-        <td class="cpf-column">987.654.321-00</td>
-        <td>
-          <button style="background-color: blue; color: white;" onclick="editPerson(2)">Editar</button>
-          <button style="background-color: red; color: white;" onclick="deletePerson(2)">Excluir</button>
-        </td>
+      <tr> 
       </tr>
+      <% } %>
+
     </table>
   </div>
 
@@ -171,17 +174,55 @@
       }
     }
 
+    // Função para preencher o formulário de edição com os dados da pessoa selecionada
     function editPerson(id) {
-      // Lógica para preencher o formulário de edição com os dados da pessoa selecionada
-      // Por exemplo, você pode fazer uma requisição AJAX para buscar os dados do servidor
-      // e preencher os campos do formulário com os valores retornados.
-      console.log("Editar pessoa com ID: " + id);
+      // Requisição AJAX para buscar os dados da pessoa pelo ID
+      fetch('/buscar-pessoa?id=' + id)
+        .then(function (response) {
+          return response.json();
+        })
+        .then(function (data) {
+          // Preenche os campos do formulário com os dados retornados
+          document.getElementById('editName').value = data.name;
+          document.getElementById('editEmail').value = data.email;
+          document.getElementById('editPhone').value = data.phone;
+          document.getElementById('editCPF').value = data.cpf;
+
+          // Exibe o formulário de edição
+          document.getElementById('editForm').style.display = 'block';
+        })
+        .catch(function (error) {
+          console.error('Erro ao buscar pessoa:', error);
+        });
+    }
+
+    // Função para enviar o formulário de edição
+    function submitEditForm() {
+      // Implemente aqui a lógica para enviar o formulário de edição
+      // Pode ser uma requisição AJAX para atualizar os dados no servidor
+      // Após a atualização, você pode ocultar o formulário de edição e atualizar a tabela ou tomar outras ações necessárias
     }
 
     function deletePerson(id) {
-      // Lógica para excluir a pessoa selecionada
-      // Por exemplo, você pode fazer uma requisição AJAX para enviar o ID da pessoa a ser excluída
-      console.log("Excluir pessoa com ID: " + id);
+      // Confirmação de exclusão
+      if (confirm("Tem certeza de que deseja excluir este usuário?")) {
+        // Requisição AJAX para excluir o funcionário
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "/excluir-usuario", true);
+        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhr.onreadystatechange = function() {
+          if (xhr.readyState === 4 && xhr.status === 200) {
+            // Exclusão bem-sucedida
+            console.log("Usuário excluído com sucesso");
+            // Atualize a tabela ou tome outras ações necessárias
+          } else {
+            // Exclusão falhou
+            console.log("Falha ao excluir usuário");
+            // Lide com a falha adequadamente (exibir mensagem de erro, por exemplo)
+          }
+        };
+        xhr.send("id=" + id);
+      }
     }
   </script>
 </body>

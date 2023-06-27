@@ -34,8 +34,8 @@
       background-color: #fff;
       padding: 20px;
       border-radius: 5px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-      width: 400px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0);
+      width: 500px;
       margin: 0 auto;
     }
 
@@ -46,7 +46,6 @@
     }
 
     input[type="text"],
-    input[type="checkbox"],
     input[type="date"],
     input[type="time"] {
       margin-top: 5px;
@@ -73,33 +72,71 @@
       text-decoration: none;
       margin-top: 10px;
     }
+    
+    .checkbox-container {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .checkbox-label {
+      margin-bottom: 10px;
+    }
   </style>
 </head>
 <body>
   <div class="btn-container">
-    <button onclick="location.href='/employee'">Ver clientes da clínica</button>
+    <button onclick="location.href='/employee'">Ver usuários do sistema</button>
     <button onclick="location.href='/procedimentos'">Ver descrição de procedimentos</button>
     <button onclick="location.href='/consultas'">Ver consultas já marcadas</button>
     <button onclick="location.href='/'">Deseja sair?</button>
   </div>
+
   <h2>Faça seu agendamento!</h2>
   <form action="/agendamento" method="POST">
-    <label for="nome_paciente">Nome do paciente:</label>
-    <input type="text" name="nome_paciente" id="nome_paciente" placeholder="Digite o nome" required/>
+    <div class="checkbox-container">
+      <label>Nome do paciente:</label>
+      <input type="text" name="nome_paciente" id="nome_paciente" placeholder="Digite o nome" required/>
 
-    <label>Procedimentos:</label>
-    <input type="checkbox" name="podologia" value="1"><label>Podologia</label>
-    <input type="checkbox" name="unha_encravada" value="1"><label>Unha encravada</label>
-    <input type="checkbox" name="laser" value="1"><label>Laser</label>
-    <input type="checkbox" name="reflexologia" value="1"><label>Reflexologia</label>
-    <input type="checkbox" name="spa" value="1"><label>SPA dos pés</label>
-    <input type="checkbox" name="verruga_plantar" value="1"><label>Verruga plantar</label>
-    <input type="checkbox" name="pes_diabeticos" value="1"><label>Pés diabéticos</label>
-    <input type="checkbox" name="retorno" value="1"><label>Retorno</label>
+      <label>Procedimento(s):</label>
 
-    <p>Horário de atendimento: 9:00 até às 19:00 de segunda à sexta e aos sábados das 9:00 às 15:00</p>
-    <input type="date" name="data" required/>
-    <input type="time" name="hora" required/>
+      <label class="checkbox-label">
+        <input type="checkbox" name="podologia" value="1"> Podologia
+      </label>
+
+      <label class="checkbox-label">
+        <input type="checkbox" name="unha_encravada" value="1"> Unha encravada
+      </label>
+
+      <label class="checkbox-label">
+        <input type="checkbox" name="laser" value="1"> Laser
+      </label>
+
+      <label class="checkbox-label">
+        <input type="checkbox" name="reflexologia" value="1"> Reflexologia
+      </label>
+
+      <label class="checkbox-label">
+        <input type="checkbox" name="spa" value="1"> SPA dos pés
+      </label>
+
+      <label class="checkbox-label">
+        <input type="checkbox" name="verruga_plantar" value="1"> Verruga plantar
+      </label>
+
+      <label class="checkbox-label">
+        <input type="checkbox" name="pes_diabeticos" value="1"> Pés diabéticos
+      </label>
+
+      <label class="checkbox-label">
+        <input type="checkbox" name="retorno" value="1"> Retorno
+      </label>
+      
+      <label>Horário de atendimento: 9:00 até às 19:00 de segunda à sexta e aos sábados das 9:00 às 15:00.</label>
+    </div>
+
+    <br>
+    Data: <input type="date" name="data" required/>
+    Horário: <input type="time" name="hora" required/><br>
 
     <input type="submit" name="confirmar" value="Confirmar consulta"/>
   </form>
