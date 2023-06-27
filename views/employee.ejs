@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <title>Página do funcionário</title>
   <style>
@@ -51,7 +52,8 @@
       margin-bottom: 20px;
     }
 
-    th, td {
+    th,
+    td {
       padding: 10px;
       text-align: left;
       border-bottom: 1px solid #ddd;
@@ -101,14 +103,8 @@
       text-overflow: ellipsis;
     }
   </style>
-   <!-- Adicione o seguinte trecho de código JavaScript -->
-   <script>
-    // Recarrega a página após 2 segundos (2000 milissegundos)
-    setTimeout(function() {
-      location.reload();
-    }, 2000);
-  </script>
 </head>
+
 <body>
   <div class="container">
     <h2>Página do funcionário</h2>
@@ -117,7 +113,7 @@
       <button onclick="location.href='/cadastro'">Cadastrar</button>
     </div>
     <div class="search-form">
-      <input type="text" id="searchInput" placeholder="Digite o nome do cliente" oninput="filterTable()"/>
+      <input type="text" id="searchInput" placeholder="Digite o nome do cliente" oninput="filterTable()" />
     </div>
     <table id="clientTable">
       <tr>
@@ -129,21 +125,53 @@
       </tr>
 
       <% for (var i=0; i < employee.length; i++) { %>
-      <tr>
-        <td><%= employee[i].nm_pessoa %></td>
-        <td><%= employee[i].ds_email %></td>
-        <td class="numero-column"><%= employee[i].nr_telefone %></td>
-        <td class="cpf-column"><%= employee[i].nr_cpf %></td>
-        <td>
-          <button style="background-color: blue; color: white;" onclick="editPerson(<%= employee[i].id_pessoa %>);">Editar</button>
-          <button style="background-color: red; color: white;" onclick="deletePerson(<%= employee[i].id_pessoa %>);">Excluir</button>
-        </td>
-      </tr>
-      <tr> 
-      </tr>
-      <% } %>
+        <tr>
+          <td>
+            <%= employee[i].nm_pessoa %>
+          </td>
+          <td>
+            <%= employee[i].ds_email %>
+          </td>
+          <td class="numero-column">
+            <%= employee[i].nr_telefone %>
+          </td>
+          <td class="cpf-column">
+            <%= employee[i].nr_cpf %>
+          </td>
+          <td>
+
+            <button style="background-color: blue; color: white;" onclick="editPerson(<%= employee[i].id_pessoa %>);"
+              data-id="<%= employee[i].id_pessoa %>">Editar</button>
+            <button style="background-color: red; color: white;" onclick="deletePerson(<%= employee[i].id_pessoa %>);"
+              data-id="<%= employee[i].id_pessoa %>">Excluir</button>
+
+          </td>
+        </tr>
+        <tr>
+        </tr>
+        <% } %>
 
     </table>
+  </div>
+
+  <!-- Formulário de edição -->
+  <div class="edit-form" id="editForm" style="display: none;">
+    <h2>Editar Pessoa</h2>
+    <form onsubmit="event.preventDefault(); submitEditForm();">
+      <label for="editName">Nome:</label>
+      <input type="text" id="editName" required><br>
+
+      <label for="editEmail">Email:</label>
+      <input type="email" id="editEmail" required><br>
+
+      <label for="editPhone">Telefone:</label>
+      <input type="tel" id="editPhone" required><br>
+
+      <label for="editCPF">CPF:</label>
+      <input type="text" id="editCPF" required><br>
+
+      <input type="submit" value="Atualizar">
+    </form>
   </div>
 
   <script>
@@ -198,9 +226,45 @@
 
     // Função para enviar o formulário de edição
     function submitEditForm() {
-      // Implemente aqui a lógica para enviar o formulário de edição
-      // Pode ser uma requisição AJAX para atualizar os dados no servidor
-      // Após a atualização, você pode ocultar o formulário de edição e atualizar a tabela ou tomar outras ações necessárias
+      // Obtém os valores dos campos do formulário de edição
+      var name = document.getElementById('editName').value;
+      var email = document.getElementById('editEmail').value;
+      var phone = document.getElementById('editPhone').value;
+      var cpf = document.getElementById('editCPF').value;
+
+      // Constrói o objeto com os dados a serem atualizados
+      var data = {
+        name: name,
+        email: email,
+        phone: phone,
+        cpf: cpf
+      };
+
+      // Envia uma requisição AJAX para atualizar os dados no servidor
+      fetch('/atualizar-pessoa', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+        .then(function (response) {
+          if (response.ok) {
+            // Atualização bem-sucedida
+            console.log('Dados atualizados com sucesso');
+            // Oculta o formulário de edição
+            document.getElementById('editForm').style.display = 'none';
+            // Atualize a tabela ou tome outras ações necessárias
+            // Por exemplo, você pode fazer uma nova requisição para buscar os dados atualizados e atualizar a tabela com os novos valores
+            refreshTable();
+          } else {
+            // Trata o erro de atualização
+            console.error('Falha ao atualizar dados');
+          }
+        })
+        .catch(function (error) {
+          console.error('Erro na requisição AJAX:', error);
+        });
     }
 
     function deletePerson(id) {
@@ -210,7 +274,7 @@
         var xhr = new XMLHttpRequest();
         xhr.open("POST", "/excluir-usuario", true);
         xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        xhr.onreadystatechange = function() {
+        xhr.onreadystatechange = function () {
           if (xhr.readyState === 4 && xhr.status === 200) {
             // Exclusão bem-sucedida
             console.log("Usuário excluído com sucesso");
@@ -226,4 +290,5 @@
     }
   </script>
 </body>
+
 </html>

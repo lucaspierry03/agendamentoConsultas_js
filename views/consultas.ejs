@@ -63,8 +63,8 @@
       <div class="consultation-info">
         <div class="info-label">Data e Hora:</div>
         <div class="info-value">
-          <%= consultas[i].data %>, às <%= consultas[i].hora %>
-        </div>
+          <%= new Date(consultas[i].data).toLocaleDateString('pt-BR') %>, às <%= consultas[i].hora %>
+      </div>
 
         <div class="info-label">Paciente:</div>
         <div class="info-value">

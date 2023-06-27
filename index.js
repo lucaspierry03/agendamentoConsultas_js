@@ -195,6 +195,63 @@ app.post('/excluir-usuario', function (req, res) {
     });
 });
 
+
+// Rota para buscar pessoa
+app.get('/buscar-pessoa', function (req, res) {
+  const { id } = req.query;
+
+  // Verifica se o ID foi fornecido
+  if (!id) {
+    return res.status(400).send('ID da pessoa não fornecido');
+  }
+
+  // Realiza a busca no banco de dados com base no ID
+  Post.findByPk(id)
+    .then(function (pessoa) {
+      if (pessoa) {
+        // Retorna os dados da pessoa como resposta
+        res.json({
+          name: pessoa.nm_pessoa,
+          email: pessoa.ds_email,
+          phone: pessoa.nr_telefone,
+          cpf: pessoa.nr_cpf
+        });
+      } else {
+        res.status(404).send('Pessoa não encontrada');
+      }
+    })
+    .catch(function (err) {
+      console.error('Erro ao buscar pessoa:', err);
+      res.status(500).send('Erro ao buscar pessoa');
+    });
+});
+
+
+// Endpoint para atualizar pessoa
+app.post('/atualizar-pessoa', function (req, res) {
+  const { name, email, phone, cpf } = req.body;
+
+  // Verifica se todos os campos foram fornecidos
+  if (!name || !email || !phone || !cpf) {
+    return res.status(400).send('Todos os campos devem ser fornecidos');
+  }
+
+  // Realiza a atualização dos dados da pessoa no banco de dados
+  Post.update(
+    { nm_pessoa: name, ds_email: email, nr_telefone: phone },
+    { where: { nr_cpf: cpf } }
+  )
+    .then(function () {
+      // Atualização bem-sucedida
+      res.redirect('/employee');
+    })
+    .catch(function (err) {
+      // Atualização falhou
+      console.error('Erro ao atualizar pessoa:', err);
+      res.status(500).send('Erro ao atualizar pessoa');
+    });
+});
+
 // Inicia o servidor
 app.listen(3000, function () {
   console.log("Servidor rodando na porta 3000");
