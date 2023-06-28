@@ -9,6 +9,7 @@ const Agendamento = require('./models/Agendamentos');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 app.set('view engine', 'ejs');
+const moment = require('moment');
 
 // Configuração do Passport.js
 passport.use(new LocalStrategy({
@@ -147,12 +148,26 @@ app.get("/procedimentos", function (req, res) {
 });
 
 app.get('/consultas', function (req, res) {
-  // Faça a consulta ao banco de dados para obter as informações das consultas marcadas
-  Agendamento.findAll().then(function (results) {
-    // Renderiza a página HTML e passa as informações para ela
-    res.render('consultas', { consultas: results });
+  Agendamento.findAll({
+    order: [['data', 'DESC'], ['hora', 'DESC']]
+  }).then(function (results) {
+    const consultas = results.map(consulta => ({
+      id_tpAgendamento: consulta.id_tpAgendamento,
+      data: moment(consulta.data).format('DD/MM/YYYY'),
+      hora: consulta.hora,
+      nome_paciente: consulta.nome_paciente,
+      podologia: consulta.podologia,
+      unha_encravada: consulta.unha_encravada,
+      laser: consulta.laser,
+      reflexologia: consulta.reflexologia,
+      spa: consulta.spa,
+      verruga_plantar: consulta.verruga_plantar,
+      pes_diabeticos: consulta.pes_diabeticos,
+      retorno: consulta.retorno
+    }));
+
+    res.render('consultas', { consultas });
   }).catch(function (err) {
-    // Lida com o erro, se houver
     console.error('Erro ao consultar o banco de dados:', err);
     res.status(500).send('Erro ao consultar o banco de dados');
   });

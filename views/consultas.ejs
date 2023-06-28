@@ -52,46 +52,220 @@
       color: #666;
       text-decoration: none;
     }
+
+    /* Estilos para o campo de pesquisa */
+    .search-form {
+      margin-bottom: 20px;
+    }
+
+    .search-form input[type="text"] {
+      padding: 10px;
+      width: 100%;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 14px;
+    }
+
+    /* Estilos para o botão de filtro */
+    .search-form button {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+      font-size: 14px;
+      border-radius: 5px;
+    }
+
+    .search-form button:hover {
+      background-color: #45a049;
+    }
+
   </style>
 </head>
 
 <body>
-  <div class="container">
-    <h2>Consultas Marcadas</h2>
+<div class="container">
+  <h2>Consultas Marcadas</h2>
 
-    <% for (var i=0; i < consultas.length; i++) { %>
-      <div class="consultation-info">
-        <div class="info-label">Data e Hora:</div>
-        <div class="info-value">
-          <%= new Date(consultas[i].data).toLocaleDateString('pt-BR') %>, às <%= consultas[i].hora %>
-      </div>
-
-        <div class="info-label">Paciente:</div>
-        <div class="info-value">
-          <%= consultas[i].nome_paciente %>
-        </div>
-
-        <div class="info-label">Procedimentos:</div>
-        <div class="info-value">
-          <% var especialidades = []; %>
-          <% if (consultas[i].podologia == '1') { especialidades.push('Podologia'); } %>
-          <% if (consultas[i].unha_encravada == '1') { especialidades.push('Unha encravada'); } %>
-          <% if (consultas[i].laser == '1') { especialidades.push('Laser'); } %>
-          <% if (consultas[i].reflexologia == '1') { especialidades.push('Reflexologia'); } %>
-          <% if (consultas[i].spa == '1') { especialidades.push('Spa'); } %>
-          <% if (consultas[i].verruga_plantar == '1') { especialidades.push('Verruga plantar'); } %>
-          <% if (consultas[i].pes_diabeticos == '1') { especialidades.push('Pés diabéticos'); } %>
-          <% if (consultas[i].retorno == '1') { especialidades.push('Retorno'); } %>
-          <%= especialidades.join(', '); %>
-          <!-- Adicione outras especialidades aqui -->
-        </div>        
-      </div>
-      <% } %>
-
-      <div class="back-button">
-        <button onclick="window.history.back()">Voltar para o agendamento</button>
-      </div>      
+  <div class="search-form">
+  <input type="text" id="searchInput" placeholder="Pesquisar" oninput="filterList()" />
   </div>
+
+<% for (var i=0; i < consultas.length; i++) { %>
+    <div class="consultation-info">
+      <div class="info-label">Data e Hora:</div>
+      <div class="info-value">
+        <%= consultas[i].data %>, às <%= consultas[i].hora.substring(0, 5) %>
+      </div>
+
+      <div class="info-label">Paciente:</div>
+      <div class="info-value">
+        <%= consultas[i].nome_paciente %>
+      </div>
+
+      <div class="info-label">Procedimentos:</div>
+      <div class="info-value">
+        <% var especialidades = []; %>
+        <% if (consultas[i].podologia == '1') { especialidades.push('Podologia'); } %>
+        <% if (consultas[i].unha_encravada == '1') { especialidades.push('Unha encravada'); } %>
+        <% if (consultas[i].laser == '1') { especialidades.push('Laser'); } %>
+        <% if (consultas[i].reflexologia == '1') { especialidades.push('Reflexologia'); } %>
+        <% if (consultas[i].spa == '1') { especialidades.push('Spa'); } %>
+        <% if (consultas[i].verruga_plantar == '1') { especialidades.push('Verruga plantar'); } %>
+        <% if (consultas[i].pes_diabeticos == '1') { especialidades.push('Pés diabéticos'); } %>
+        <% if (consultas[i].retorno == '1') { especialidades.push('Retorno'); } %>
+        <%= especialidades.join(', '); %>
+      </div>
+
+      <div class="info-label">Ações:</div>
+      <div class="info-value">
+        <button style="background-color: blue; color: white;" onclick="editPerson(<%= consultas[i].id_tpAgendamento %>);">Editar</button>
+        <button style="background-color: red; color: white;" onclick="deletePerson(<%= consultas[i].id_tpAgendamento %>);">Excluir</button>
+      </div>
+    </div>
+  <% } %>
+
+  <div class="back-button">
+    <button onclick="window.history.back()">Voltar para o agendamento</button>
+  </div>
+</div>
+
+<!-- Formulário de edição -->
+<div class="edit-form" id="editForm" style="display: none;">
+  <h2>Editar Pessoa</h2>
+  <form onsubmit="event.preventDefault(); submitEditForm();">
+    <label for="editName">Nome:</label>
+    <input type="text" id="editName" required><br>
+
+    <label for="editEmail">Email:</label>
+    <input type="email" id="editEmail" required><br>
+
+    <label for="editPhone">Telefone:</label>
+    <input type="tel" id="editPhone" required><br>
+
+    <label for="editCPF">CPF:</label>
+    <input type="text" id="editCPF" required><br>
+
+    <input type="submit" value="Atualizar">
+  </form>
+</div>
+
+<script>
+  function filterList() {
+    var input, filter, consultations, consultationInfo, i, j, matchFound;
+    input = document.getElementById("searchInput");
+    filter = input.value.toUpperCase();
+    consultations = document.getElementsByClassName("consultation-info");
+
+    for (i = 0; i < consultations.length; i++) {
+      consultationInfo = consultations[i].getElementsByClassName("info-value");
+      matchFound = false;
+
+      for (j = 0; j < consultationInfo.length; j++) {
+        var value = consultationInfo[j].innerHTML.toUpperCase();
+        if (value.indexOf(filter) > -1) {
+          matchFound = true;
+          break;
+        }
+      }
+
+      if (matchFound) {
+        consultations[i].style.display = "";
+      } else {
+        consultations[i].style.display = "none";
+      }
+    }
+  }
+
+  // Função para preencher o formulário de edição com os dados da pessoa selecionada
+function editPerson(id) {
+// Requisição AJAX para buscar os dados da pessoa pelo ID
+fetch('/buscar-pessoa?id=' + id)
+.then(function (response) {
+return response.json();
+})
+.then(function (data) {
+// Preenche os campos do formulário com os dados retornados
+document.getElementById('editName').value = data.name;
+document.getElementById('editEmail').value = data.email;
+document.getElementById('editPhone').value = data.phone;
+document.getElementById('editCPF').value = data.cpf;
+
+// Exibe o formulário de edição
+document.getElementById('editForm').style.display = 'block';
+})
+.catch(function (error) {
+console.error('Erro ao buscar pessoa:', error);
+});
+}
+
+// Função para enviar o formulário de edição
+function submitEditForm() {
+// Obtém os valores dos campos do formulário de edição
+var name = document.getElementById('editName').value;
+var email = document.getElementById('editEmail').value;
+var phone = document.getElementById('editPhone').value;
+var cpf = document.getElementById('editCPF').value;
+
+// Constrói o objeto com os dados a serem atualizados
+var data = {
+name: name,
+email: email,
+phone: phone,
+cpf: cpf
+};
+
+// Envia uma requisição AJAX para atualizar os dados no servidor
+fetch('/atualizar-pessoa', {
+method: 'POST',
+headers: {
+'Content-Type': 'application/json'
+},
+body: JSON.stringify(data)
+})
+.then(function (response) {
+if (response.ok) {
+// Atualização bem-sucedida
+console.log('Dados atualizados com sucesso');
+// Oculta o formulário de edição
+document.getElementById('editForm').style.display = 'none';
+// Atualize a tabela ou tome outras ações necessárias
+// Por exemplo, você pode fazer uma nova requisição para buscar os dados atualizados e atualizar a tabela com os novos valores
+refreshTable();
+} else {
+// Trata o erro de atualização
+console.error('Falha ao atualizar dados');
+}
+})
+.catch(function (error) {
+console.error('Erro na requisição AJAX:', error);
+});
+}
+
+function deletePerson(id) {
+// Confirmação de exclusão
+if (confirm("Tem certeza de que deseja excluir este usuário?")) {
+// Requisição AJAX para excluir o funcionário
+var xhr = new XMLHttpRequest();
+xhr.open("POST", "/excluir-usuario", true);
+xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+xhr.onreadystatechange = function () {
+if (xhr.readyState === 4 && xhr.status === 200) {
+// Exclusão bem-sucedida
+console.log("Usuário excluído com sucesso");
+// Atualize a tabela ou tome outras ações necessárias
+} else {
+// Exclusão falhou
+console.log("Falha ao excluir usuário");
+// Lide com a falha adequadamente (exibir mensagem de erro, por exemplo)
+}
+};
+xhr.send("id=" + id);
+}
+}
+</script>
+
 </body>
 
 </html>
