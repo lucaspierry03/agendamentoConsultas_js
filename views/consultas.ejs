@@ -104,6 +104,11 @@
         <%= consultas[i].nome_paciente %>
       </div>
 
+      <div class="info-label">Profissional:</div>
+      <div class="info-value">
+        <%= consultas[i].nome_profissional %>
+      </div>
+
       <div class="info-label">Procedimentos:</div>
       <div class="info-value">
         <% var especialidades = []; %>
@@ -135,17 +140,53 @@
 <div class="edit-form" id="editForm" style="display: none;">
   <h2>Editar Pessoa</h2>
   <form onsubmit="event.preventDefault(); submitEditForm();">
+    <input type="hidden" id="editId" value="">
+
+    <label for="editData">Data:</label>
+    <input type="date" id="editData" required><br>
+
+    <label for="editHora">Hora:</label>
+    <input type="time" id="editHora" required><br>
+
     <label for="editName">Nome:</label>
     <input type="text" id="editName" required><br>
 
-    <label for="editEmail">Email:</label>
-    <input type="email" id="editEmail" required><br>
+    <label for="editProfissional">Profissional:</label>
+    <input type="text" id="editProfissional" required><br>
 
-    <label for="editPhone">Telefone:</label>
-    <input type="tel" id="editPhone" required><br>
+    <label>Procedimento(s):</label>
 
-    <label for="editCPF">CPF:</label>
-    <input type="text" id="editCPF" required><br>
+    <label class="checkbox-label">
+      <input type="checkbox" id="editPodologia" name="editPodologia" value="1"> Podologia
+    </label>
+
+    <label class="checkbox-label">
+      <input type="checkbox" id="editUnhaEncravada" name="editUnhaEncravada" value="1"> Unha encravada
+    </label>
+
+    <label class="checkbox-label">
+      <input type="checkbox"id="editLaser"  name="editLaser" value="1"> Laser
+    </label>
+
+    <label class="checkbox-label">
+      <input type="checkbox"id="editReflexologia"  name="editReflexologia" value="1"> Reflexologia
+    </label>
+
+    <label class="checkbox-label">
+      <input type="checkbox"id="editSpa"  name="editSpa" value="1"> SPA dos pés
+    </label>
+
+    <label class="checkbox-label">
+      <input type="checkbox"id="editVerrugaPlantar"  name="editVerrugaPlantar" value="1"> Verruga plantar
+    </label>
+
+    <label class="checkbox-label">
+      <input type="checkbox"id="editPesDiabeticos"  name="editPesDiabeticos" value="1"> Pés diabéticos
+    </label>
+
+    <label class="checkbox-label">
+      <input type="checkbox"id="editRetorno"  name="editRetorno" value="1"> Retorno
+    </label>
 
     <input type="submit" value="Atualizar">
   </form>
@@ -181,67 +222,87 @@
   // Função para preencher o formulário de edição com os dados da pessoa selecionada
 function editPerson(id) {
 // Requisição AJAX para buscar os dados da pessoa pelo ID
-fetch('/buscar-pessoa?id=' + id)
-.then(function (response) {
-return response.json();
-})
-.then(function (data) {
-// Preenche os campos do formulário com os dados retornados
-document.getElementById('editName').value = data.name;
-document.getElementById('editEmail').value = data.email;
-document.getElementById('editPhone').value = data.phone;
-document.getElementById('editCPF').value = data.cpf;
+  fetch('/buscar-consulta?id=' + id, {
+    method: 'GET'
+  })
+          .then(function (response) {
+            return response.json();
+          })
+          .then(function (data) {
+            // Preenche os campos do formulário com os dados retornados
+            const nomePaciente = document.getElementById('nome_paciente').value;
+            const nomeProfissional = document.getElementById('nome_profissional').value;
+            const podologia = document.getElementById('podologia').checked;
+            const unhaEncravada = document.getElementById('unha_encravada').checked;
+            const laser = document.getElementById('laser').checked;
+            const reflexologia = document.getElementById('reflexologia').checked;
+            const spa = document.getElementById('spa').checked;
+            const verrugaPlantar = document.getElementById('verruga_plantar').checked;
+            const pesDiabeticos = document.getElementById('pes_diabeticos').checked;
+            const retorno = document.getElementById('retorno').checked;
 
-// Exibe o formulário de edição
-document.getElementById('editForm').style.display = 'block';
-})
-.catch(function (error) {
-console.error('Erro ao buscar pessoa:', error);
-});
+            // Exibe o formulário de edição
+            document.getElementById('editForm').style.display = 'block';
+          })
+          .catch(function (error) {
+            console.error('Erro ao buscar pessoa:', error);
+          });
 }
 
 // Função para enviar o formulário de edição
-function submitEditForm() {
-// Obtém os valores dos campos do formulário de edição
-var name = document.getElementById('editName').value;
-var email = document.getElementById('editEmail').value;
-var phone = document.getElementById('editPhone').value;
-var cpf = document.getElementById('editCPF').value;
+  // Função para enviar o formulário de edição
+  function submitEditForm() {
+    var id = document.getElementById('editId').value;
+    var nomePaciente = document.getElementById('editNomePaciente').value;
+    var nomeProfissional = document.getElementById('editNomeProfissional').value;
+    var podologia = document.getElementById('editPodologia')[0].checked;
+    var unhaEncravada = document.getElementById('editUnhaEncravada')[0].checked;
+    var laser = document.getElementById('editLaser')[0].checked;
+    var reflexologia = document.getElementById('editReflexologia')[0].checked;
+    var spa = document.getElementById('editSpa')[0].checked;
+    var verrugaPlantar = document.getElementById('editVerrugaPlantar')[0].checked;
+    var pesDiabeticos = document.getElementById('editPesDiabeticos')[0].checked;
+    var retorno = document.getElementById('editRetorno')[0].checked;
 
-// Constrói o objeto com os dados a serem atualizados
-var data = {
-name: name,
-email: email,
-phone: phone,
-cpf: cpf
-};
+    var dataObj = {
+      id: id,
+      nome_paciente: nomePaciente,
+      nome_profissional: nomeProfissional,
+      podologia: podologia,
+      unha_encravada: unhaEncravada,
+      laser: laser,
+      reflexologia: reflexologia,
+      spa: spa,
+      verruga_plantar: verrugaPlantar,
+      pes_diabeticos: pesDiabeticos,
+      retorno: retorno
+    };
 
-// Envia uma requisição AJAX para atualizar os dados no servidor
-fetch('/atualizar-pessoa', {
-method: 'POST',
-headers: {
-'Content-Type': 'application/json'
-},
-body: JSON.stringify(data)
-})
-.then(function (response) {
-if (response.ok) {
-// Atualização bem-sucedida
-console.log('Dados atualizados com sucesso');
-// Oculta o formulário de edição
-document.getElementById('editForm').style.display = 'none';
-// Atualize a tabela ou tome outras ações necessárias
-// Por exemplo, você pode fazer uma nova requisição para buscar os dados atualizados e atualizar a tabela com os novos valores
-refreshTable();
-} else {
-// Trata o erro de atualização
-console.error('Falha ao atualizar dados');
-}
-})
-.catch(function (error) {
-console.error('Erro na requisição AJAX:', error);
-});
-}
+  // Envia uma requisição AJAX para atualizar os dados no servidor
+    fetch('/atualizar-consulta', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(dataObj)
+    })
+            .then(function (response) {
+              if (response.ok) {
+                // Atualização bem-sucedida
+                console.log('Dados atualizados com sucesso');
+                // Oculta o formulário de edição
+                document.getElementById('editForm').style.display = 'none';
+                // Atualize a tabela ou tome outras ações necessárias
+                // Por exemplo, você pode fazer uma nova requisição para buscar os dados atualizados
+                // ou atualizar a tabela diretamente com os dados fornecidos
+              } else {
+                console.error('Erro ao atualizar os dados');
+              }
+            })
+            .catch(function (error) {
+              console.error('Erro ao enviar a requisição:', error);
+            });
+  }
 
 function deletePerson(id) {
 // Confirmação de exclusão

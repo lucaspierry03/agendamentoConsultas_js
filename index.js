@@ -94,21 +94,21 @@ app.post('/add', function (req, res, next) {
   });
 });
 
-// Rota de login
 app.post('/logar', function (req, res) {
   const { email, senha } = req.body;
   const md5 = require('md5');
-  const senhaMD5 = md5(senha); // Gera o hash MD5 da senha
-
+  const senhaMD5 = md5(senha);
 
   Post.findOne({
     where: {
       ds_email: email,
-      ds_senha: senhaMD5 // Compara com o hash MD5 da senha no banco de dados
+      ds_senha: senhaMD5
     }
   }).then(function (result) {
     if (result) {
-      res.sendFile(__dirname + "/views/agendamento.html");
+      const isEmployee = result.tp_pessoa == 1;
+
+      res.render('agendamento', { isEmployee: isEmployee });
     } else {
       res.send("E-mail ou senha incorretos. <a href='/login'>Voltar para login</a>");
     }
@@ -124,6 +124,7 @@ app.post('/agendamento', function (req, res, next) {
     }
     Agendamento.create({
       nome_paciente: req.body.nome_paciente,
+      nome_profissional: req.body.nome_profissional,
       podologia: req.body.podologia,
       unha_encravada: req.body.unha_encravada,
       laser: req.body.laser,
@@ -156,6 +157,7 @@ app.get('/consultas', function (req, res) {
       data: moment(consulta.data).format('DD/MM/YYYY'),
       hora: consulta.hora,
       nome_paciente: consulta.nome_paciente,
+      nome_profissional: consulta.nome_profissional ,
       podologia: consulta.podologia,
       unha_encravada: consulta.unha_encravada,
       laser: consulta.laser,
@@ -266,6 +268,102 @@ app.post('/atualizar-pessoa', function (req, res) {
       res.status(500).send('Erro ao atualizar pessoa');
     });
 });
+
+app.get('/buscar-consulta', function (req, res) {
+  const { id } = req.query;
+
+  if (!id) {
+    return res.status(400).send('ID da consulta não fornecido');
+  }
+
+  Agendamento.findByPk(id)
+      .then(function (consulta) {
+        if (consulta) {
+          // Atualiza os dados da consulta com base nos valores recebidos do formulário
+          consulta.nome_paciente = req.body.nome_paciente;
+          consulta.nome_profissional = req.body.nome_profissional;
+          consulta.podologia = req.body.podologia;
+          consulta.unha_encravada = req.body.unha_encravada;
+          consulta.laser = req.body.laser;
+          consulta.reflexologia = req.body.reflexologia;
+          consulta.spa = req.body.spa;
+          consulta.verruga_plantar = req.body.verruga_plantar;
+          consulta.pes_diabeticos = req.body.pes_diabeticos;
+          consulta.retorno = req.body.retorno;
+
+          // Adicione os procedimentos selecionados ao objeto consulta
+          consulta.procedimentos = [];
+          if (req.body.podologia) {
+            consulta.procedimentos.push('Podologia');
+          }
+          if (req.body.unha_encravada) {
+            consulta.procedimentos.push('Unha Encravada');
+          }
+          if (req.body.laser) {
+            consulta.procedimentos.push('Laser');
+          }
+          if (req.body.reflexologia) {
+            consulta.procedimentos.push('Reflexologia');
+          }
+          if (req.body.spa) {
+            consulta.procedimentos.push('Spa');
+          }
+          if (req.body.verruga_plantar) {
+            consulta.procedimentos.push('Verruga Plantar');
+          }
+          if (req.body.pes_diabeticos) {
+            consulta.procedimentos.push('Pés Diabéticos');
+          }
+
+          // Salva a consulta atualizada no banco de dados
+          consulta.save()
+              .then(function (updatedConsulta) {
+                // Retorna os dados da consulta atualizada como resposta
+                res.json({
+                  id: updatedConsulta.id_tpAgendamento,
+                  data: updatedConsulta.data,
+                  hora: updatedConsulta.hora,
+                  nome_paciente: updatedConsulta.nome_paciente,
+                  nome_profissional: updatedConsulta.nome_profissional,
+                  procedimentos: updatedConsulta.procedimentos
+                  // adicione aqui outros campos atualizados que você deseja retornar
+                });
+              })
+              .catch(function (err) {
+                console.error('Erro ao atualizar consulta:', err);
+                res.status(500).send('Erro ao atualizar consulta');
+              });
+        } else {
+          res.status(404).send('Consulta não encontrada');
+        }
+      })
+      .catch(function (err) {
+        console.error('Erro ao buscar consulta:', err);
+        res.status(500).send('Erro ao buscar consulta');
+      });
+});
+
+app.post('/atualizar-consulta', function (req, res) {
+  const { id } = req.body; // Alterado para req.body em vez de req.query
+  const { data, hora, name, profissional, procedimentos } = req.body; // Adicionei procedimentos aqui
+
+  if (!data || !hora || !name || !profissional) {
+    return res.status(400).send('Todos os campos devem ser fornecidos');
+  }
+
+  Agendamento.update(
+      { data: data, hora: hora, nome_paciente: name, nome_profissional: profissional, procedimentos: procedimentos }, // Adicionei procedimentos aqui
+      { where: { id_tpAgendamento: id } }
+  )
+      .then(function () {
+        res.sendStatus(200); // Atualização bem-sucedida
+      })
+      .catch(function (err) {
+        console.error('Erro ao atualizar consulta:', err);
+        res.status(500).send('Erro ao atualizar consulta');
+      });
+});
+
 
 // Inicia o servidor
 app.listen(3000, function () {

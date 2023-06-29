@@ -24,6 +24,9 @@ const Post = sequelize.define('pessoa', {
     },
     ds_senha: {
         type: Sequelize.STRING
+    },
+    tp_pessoa: {
+        type: Sequelize.STRING
     }
 }, {
     tableName: 'pessoa',

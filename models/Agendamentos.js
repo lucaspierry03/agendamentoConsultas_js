@@ -9,6 +9,9 @@ const Agendamento = sequelize.define('tipo_agendamento', {
     nome_paciente: {
         type: Sequelize.STRING
     },
+    nome_profissional: {
+        type: Sequelize.STRING
+    },
     podologia: {
         type: Sequelize.STRING
     },

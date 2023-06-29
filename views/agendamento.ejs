@@ -85,9 +85,9 @@
 </head>
 <body>
   <div class="btn-container">
-    <button onclick="location.href='/employee'">Ver usuários do sistema</button>
-    <button onclick="location.href='/procedimentos'">Ver descrição de procedimentos</button>
-    <button onclick="location.href='/consultas'">Ver consultas já marcadas</button>
+    <button id="verUsuariosButton" onclick="location.href='/employee'">Ver usuários do sistema</button>
+    <button onclick="location.href='/procedimentos'">Ver descrição dos procedimentos</button>
+    <button id="verConsultasButton" onclick="location.href='/consultas'">Ver consultas já marcadas</button>
     <button onclick="location.href='/'">Deseja sair?</button>
   </div>
 
@@ -96,6 +96,8 @@
     <div class="checkbox-container">
       <label>Nome do paciente:</label>
       <input type="text" name="nome_paciente" id="nome_paciente" placeholder="Digite o nome" required/>
+      <label>Nome do profissional (Tatiane ou Adelita):</label>
+      <input type="text" name="nome_profissional" id="nome_profissional" placeholder="Digite o nome" required/>
 
       <label>Procedimento(s):</label>
 
@@ -141,5 +143,17 @@
     <input type="submit" name="confirmar" value="Confirmar consulta"/>
   </form>
 
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const isEmployee = <%= isEmployee %>; // Obtém o valor da variável "isEmployee" passada pelo servidor
+
+      if (!isEmployee) {
+        const buttonUsuarios = document.getElementById("verUsuariosButton");
+        const buttonConsultas = document.getElementById("verConsultasButton");
+        buttonUsuarios.style.display = "none";
+        buttonConsultas.style.display = "none";
+      }
+    });
+  </script>
 </body>
 </html>
