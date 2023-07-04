@@ -125,7 +125,6 @@
 
       <div class="info-label">Ações:</div>
       <div class="info-value">
-        <button style="background-color: blue; color: white;" onclick="editPerson(<%= consultas[i].id_tpAgendamento %>);">Editar</button>
         <button style="background-color: red; color: white;" onclick="deletePerson(<%= consultas[i].id_tpAgendamento %>);">Excluir</button>
       </div>
     </div>
@@ -309,7 +308,7 @@ function deletePerson(id) {
 if (confirm("Tem certeza de que deseja excluir este usuário?")) {
 // Requisição AJAX para excluir o funcionário
 var xhr = new XMLHttpRequest();
-xhr.open("POST", "/excluir-usuario", true);
+xhr.open("POST", "/excluir-consulta", true);
 xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 xhr.onreadystatechange = function () {
 if (xhr.readyState === 4 && xhr.status === 200) {

@@ -364,6 +364,29 @@ app.post('/atualizar-consulta', function (req, res) {
       });
 });
 
+app.post('/excluir-consulta', function (req, res) {
+  const { id } = req.body;
+
+  // Verifica se o ID foi fornecido
+  if (!id) {
+    return res.status(400).send('ID do funcionário não fornecido');
+  }
+
+  Agendamento.destroy({
+    where: {
+      id_tpAgendamento: id
+    }
+  })
+    .then(function () {
+      // Exclusão bem-sucedida
+      res.redirect('/consultas'); 
+    })
+    .catch(function (err) {
+      // Exclusão falhou
+      console.error('Erro ao excluir usuário:', err);
+      res.status(500).send('Erro ao excluir usuário');
+    });
+});
 
 // Inicia o servidor
 app.listen(3000, function () {

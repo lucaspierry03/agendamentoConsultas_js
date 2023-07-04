@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Tempo de geração: 27/06/2023 às 00:59
+-- Tempo de geração: 04/07/2023 às 17:05
 -- Versão do servidor: 8.0.31
--- Versão do PHP: 8.0.26
+-- Versão do PHP: 7.4.33
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -151,18 +151,18 @@ CREATE TABLE IF NOT EXISTS `pessoa` (
   `nr_situacao` int NOT NULL,
   `dt_nascimento` date NOT NULL,
   `nr_cpf` varchar(15) NOT NULL,
-  `tp_pessoa` int NOT NULL,
+  `tp_pessoa` int DEFAULT NULL,
   PRIMARY KEY (`id_pessoa`)
-) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Despejando dados para a tabela `pessoa`
 --
 
 INSERT INTO `pessoa` (`id_pessoa`, `id_especialidade`, `ds_email`, `ds_senha`, `nr_telefone`, `nm_pessoa`, `nr_situacao`, `dt_nascimento`, `nr_cpf`, `tp_pessoa`) VALUES
-(37, 0, 'willian@teste.com', '698dc19d489c4e4db73e28a713eab07b', '123', 'Willian', 0, '2023-06-15', '123', 0),
-(38, 0, 'lucaspierry00@gmail.com', '2db95e8e1a9267b7a1188556b2013b33', 't', 'testando', 0, '2023-06-24', '1', 0),
-(39, 0, 'simone@simone.com', 'c4ca4238a0b923820dcc509a6f75849b', '1', 'Simone', 0, '2023-06-15', '1', 0);
+(37, 0, 'willian@teste.com', '698dc19d489c4e4db73e28a713eab07b', '(12) 3456-7890', 'Willian Costa', 0, '2023-06-15', '123.456.789-00', 1),
+(41, 0, 'lucaspierry15@hotmail.com', 'dc53fc4f621c80bdc2fa0329a6123708', '4199898-9998', 'Lucas', 0, '2023-06-06', '131.156.897-87', 0),
+(42, 0, 'lucaspierry00@gmail.com', 'dc53fc4f621c80bdc2fa0329a6123708', '4199898-9998', 'Lucas Rosario', 0, '2023-06-07', '111.111.111-11', 1);
 
 -- --------------------------------------------------------
 
@@ -174,6 +174,7 @@ DROP TABLE IF EXISTS `tipo_agendamento`;
 CREATE TABLE IF NOT EXISTS `tipo_agendamento` (
   `id_tpAgendamento` int NOT NULL AUTO_INCREMENT,
   `nome_paciente` varchar(255) DEFAULT NULL,
+  `nome_profissional` varchar(255) DEFAULT NULL,
   `podologia` int NOT NULL DEFAULT '0',
   `unha_encravada` int NOT NULL DEFAULT '0',
   `laser` int NOT NULL DEFAULT '0',
@@ -185,16 +186,15 @@ CREATE TABLE IF NOT EXISTS `tipo_agendamento` (
   `data` date NOT NULL,
   `hora` time NOT NULL,
   PRIMARY KEY (`id_tpAgendamento`)
-) ENGINE=InnoDB AUTO_INCREMENT=65 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=73 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Despejando dados para a tabela `tipo_agendamento`
 --
 
-INSERT INTO `tipo_agendamento` (`id_tpAgendamento`, `nome_paciente`, `podologia`, `unha_encravada`, `laser`, `reflexologia`, `spa`, `verruga_plantar`, `pes_diabeticos`, `retorno`, `data`, `hora`) VALUES
-(55, 'Simone', 1, 0, 0, 0, 0, 0, 1, 0, '2023-06-16', '14:20:00'),
-(63, 'Lucas', 0, 1, 1, 1, 1, 0, 1, 0, '2023-06-13', '20:15:00'),
-(64, 'Lucas', 1, 0, 0, 0, 0, 0, 0, 0, '2023-06-07', '17:59:00');
+INSERT INTO `tipo_agendamento` (`id_tpAgendamento`, `nome_paciente`, `nome_profissional`, `podologia`, `unha_encravada`, `laser`, `reflexologia`, `spa`, `verruga_plantar`, `pes_diabeticos`, `retorno`, `data`, `hora`) VALUES
+(66, 'Mari', NULL, 1, 0, 0, 0, 0, 0, 0, 0, '2023-06-29', '15:00:00'),
+(72, 'Peter', 'Tatiane', 1, 0, 0, 0, 0, 0, 0, 0, '2023-07-06', '14:10:00');
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
